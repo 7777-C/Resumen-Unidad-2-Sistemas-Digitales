@@ -3,7 +3,7 @@
 El mundo físico es continuo y los microcontroladores son **digitales**. Para procesar variables físicas en un ESP32 se sigue esta cadena:
 
 $$
-\mathrm{Sensor\ (LM35: °C \rightarrow mV)}
+\mathrm{Sensor\ (LM35:\ ^\circ C \rightarrow mV)}
 \longrightarrow
 \mathrm{ADC\ (Muestreo\ y\ cuantización)}
 \longrightarrow
@@ -17,7 +17,10 @@ $$
 ### 1.1. Muestreo: ¿Cada cuánto tiempo medimos?
 
 - **Muestra ($x[n]$) y Muestreo:** Una muestra es una captura del valor de una señal en un instante determinado. El muestreo consiste en capturar estas «fotos» de la señal a intervalos fijos de tiempo, como los fotogramas de una película.
+
 - **Periodo ($T_s$) y Frecuencia ($f_s$):** $T_s$ es el tiempo en segundos entre cada muestra y $f_s$ es la cantidad de muestras por segundo, medida en Hz.
+
+  La relación entre ambas magnitudes es:
 
   $$
   f_s = \frac{1}{T_s}
@@ -38,12 +41,12 @@ $$
   Muestrear muy lento provoca **aliasing**, generando una señal falsa de baja frecuencia:
 
   $$
-  f_{\mathrm{falsa}} = \left|f-k\cdot f_s\right|
+  f_{\mathrm{falsa}} = \left|f - k \cdot f_s\right|
   $$
 
   Esto es similar al efecto de ruedas girando al revés en un video.
 
-- **Temperatura:** Varía muy lento ($<1\ \mathrm{Hz}$). Muestrear a $10\ \mathrm{Hz}$ cumple con Nyquist, permite promediar y ahorra CPU y energía.
+- **Temperatura:** Varía muy lento ($< 1\ \mathrm{Hz}$). Muestrear a $10\ \mathrm{Hz}$ cumple con Nyquist, permite promediar y ahorrar CPU y energía.
 
 ### 1.2. Cuantización: ¿Con qué detalle medimos cada muestra?
 
@@ -59,23 +62,26 @@ $$
   \mathrm{LSB} = \frac{\mathrm{Fondo\ de\ escala}}{2^N}
   $$
 
-  - *Arduino UNO (10 bits, $5\ \mathrm{V}$):* $1024$ escalones.
+  - **Arduino UNO (10 bits, $5\ \mathrm{V}$):** Tiene $1024$ escalones.
 
     $$
-    \frac{5000\ \mathrm{mV}}{1024} \approx 4.9\ \mathrm{mV}
+    \mathrm{LSB} = \frac{5000\ \mathrm{mV}}{1024}
+    \approx 4.9\ \mathrm{mV}
     $$
 
     Cada escalón equivale aproximadamente a $4.9\ \mathrm{mV}$.
 
-  - *ESP32 (12 bits, $1.1\ \mathrm{V}$ base):* $4096$ escalones (`0` a `4095`).
+  - **ESP32 (12 bits, $1.1\ \mathrm{V}$ base):** Tiene $4096$ niveles (`0` a `4095`).
 
     $$
-    \frac{1100\ \mathrm{mV}}{4096} \approx 0.27\ \mathrm{mV}
+    \mathrm{LSB} = \frac{1100\ \mathrm{mV}}{4096}
+    \approx 0.27\ \mathrm{mV}
     $$
 
     Cada escalón equivale aproximadamente a $0.27\ \mathrm{mV}$.
 
 - **ADC tipo SAR:** Encuentra el valor haciendo una búsqueda binaria de 12 preguntas consecutivas, una por cada bit.
+
 - **Resolución vs. Exactitud:** Tener escalones pequeños (alta resolución) no garantiza cercanía al valor real (exactitud) si hay ruido o descalibración.
 
 ## 2. Configuración del Hardware: ESP32 y Sensor LM35
@@ -83,7 +89,8 @@ $$
 ### 2.1. El ADC del ESP32
 
 - **Pines:** Se usa el **ADC1** (GPIO 32 al 39, específicamente **GPIO34**), porque el ADC2 deja de funcionar al activar el Wi-Fi.
-- **Atenuación («El zoom del ADC»):** La regla interna mide hasta aproximadamente $1.1\ \mathrm{V}$. Para rangos mayores utiliza divisores internos llamados atenuación. Se elige la atenuación más baja que cubra el voltaje máximo del sensor.
+
+- **Atenuación («El zoom del ADC»):** La regla interna mide hasta aproximadamente $1.1\ \mathrm{V}$. Para rangos mayores utiliza divisores internos llamados atenuación. Se elige la atenuación más baja que cubra el voltaje máximo del sensor:
 
   - **`ADC_0db` ($100$ a $950\ \mathrm{mV}$):** Recomendada para el LM35 en un aula ($10$ a $95\ ^\circ\mathrm{C}$).
   - La atenuación por defecto (`11db`, $150$ a $3100\ \mathrm{mV}$) puede leer mal por debajo de $15\ ^\circ\mathrm{C}$.
@@ -93,6 +100,8 @@ $$
 ### 2.2. El Sensor LM35
 
 - **Funcionamiento:** Entrega **$10\ \mathrm{mV}$ por cada grado Celsius**.
+
+  La temperatura se calcula mediante:
 
   $$
   T = \frac{\mathrm{mV}}{10}
@@ -110,7 +119,13 @@ $$
    - Introduce un retardo de respuesta de:
 
      $$
-     N \times T_s = 10 \times 0.1 = 1\ \mathrm{s}
+     t_{\mathrm{retardo}} = N \times T_s
+     $$
+
+     Para $N=10$ y $T_s=0.1\ \mathrm{s}$:
+
+     $$
+     t_{\mathrm{retardo}} = 10 \times 0.1 = 1\ \mathrm{s}
      $$
 
 3. **Decisión con Histéresis:** Evita el parpadeo errático de una alarma por ruido usando **dos umbrales** distintos. Por ejemplo, encender a $28\ ^\circ\mathrm{C}$ y apagar al bajar a $26\ ^\circ\mathrm{C}$, en lugar de utilizar un solo umbral.
@@ -120,6 +135,7 @@ $$
 ### 4.1. Arquitectura Interna
 
 - **Estructura:** Tiene **16 columnas** (`0` a `15`) y **2 filas** (`0` y `1`), sumando 32 casillas. Cada casilla es una matriz de $5 \times 8$ puntos (la última fila es para el cursor).
+
 - **Controlador HD44780:** Recibe códigos **ASCII** (por ejemplo, `65` para `'A'`) desde el ESP32 y gestiona tres memorias:
 
   - **CGROM:** Formas de letras estándar grabadas de fábrica.
