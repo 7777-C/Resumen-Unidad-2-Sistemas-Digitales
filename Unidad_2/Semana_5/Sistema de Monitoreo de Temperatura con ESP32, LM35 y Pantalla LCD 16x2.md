@@ -8,13 +8,13 @@ $$
 
 ## 1. Digitalización de la Señal: Muestreo y Cuantización
 
-### Muestreo :¿Cada cuánto tiempo medimos?
+### Muestreo: ¿Cada cuánto tiempo medimos?
 * **Muestra ($x[n]$) y Muestreo:** Capturar "fotos" de la señal a intervalos fijos de tiempo, como los fotogramas de una película.
 * **Periodo ($T_s$) y Frecuencia ($f_s$):** $T_s$ es el tiempo en segundos entre cada muestra y $f_s = 1 / T_s$ es la cantidad de muestras por segundo (Hz). Si $T_s = 100\text{ ms}$ ($0.1\text{ s}$), entonces $f_s = 10\text{ Hz}$.
 * **Teorema de Nyquist y Aliasing:** La frecuencia de muestreo debe ser mayor al doble de la frecuencia máxima de la señal ($f_s > 2 \cdot f_{\max}$). Muestrear muy lento provoca **aliasing**, generando una señal falsa de baja frecuencia ($f_{\text{falsa}} = \vert f - k \cdot f_s \vert$), similar al efecto de ruedas girando al revés en un video.
 * **Temperatura:** Varía muy lento ($< 1\text{ Hz}$). Muestrear a $10\text{ Hz}$ cumple con Nyquist, permite promediar y ahorra CPU y energía.
 
-### Cuantización :¿Con qué detalle medimos cada muestra?
+### Cuantización: ¿Con qué detalle medimos cada muestra?
 * **Cuantización y Error:** Es redondear cada muestra al escalón digital más cercano. Lo que se pierde al redondear es el **error de cuantización** (máximo $\pm \frac{1}{2}$ escalón).
 * **Resolución y LSB:** Con $N$ bits existen $2^N$ escalones. El **LSB** (Bit Menos Significativo) es el voltaje de un escalón ($\text{LSB} = \text{Fondo de escala} / 2^N$).
   * *Arduino UNO (10 bits, $5\text{ V}$):* $1024$ escalones $\rightarrow 5000\text{ mV} / 1024 \approx 4.9\text{ mV}$ por escalón.
