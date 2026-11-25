@@ -3,7 +3,7 @@
 El mundo físico es continuo y los microcontroladores son **digitales**. Para procesar variables físicas en un ESP32 se sigue esta cadena:
 
 $$
-\text{Sensor (LM35: °C} \rightarrow \text{mV)} \longrightarrow \text{ADC (Muestrea y cuantiza)} \longrightarrow \text{Código (Escala, filtra, decide)} \longrightarrow \text{Salida (LCD 16x2)}
+\text{Sensor (LM35: °C} \rightarrow \text{mV)} \longrightarrow \text{ADC (Muestreo y cuantiza)} \longrightarrow \text{Código (Escala, filtra, decide)} \longrightarrow \text{Salida (LCD 16x2)}
 $$
 
 ## 1. Digitalización de la Señal: Muestreo y Cuantización
