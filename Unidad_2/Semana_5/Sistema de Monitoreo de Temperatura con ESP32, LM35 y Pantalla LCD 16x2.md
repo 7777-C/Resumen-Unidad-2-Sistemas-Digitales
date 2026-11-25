@@ -1,6 +1,6 @@
 # Sistema de Monitoreo de Temperatura con ESP32, LM35 y Pantalla LCD 16x2
 
-El mundo físico es continuo (**analógico**, como una rampa con infinitos valores) y los microcontroladores son **digitales** (como una escalera con valores discretos). Para procesar variables físicas en un ESP32 se sigue esta cadena:
+El mundo físico es continuo y los microcontroladores son **digitales**. Para procesar variables físicas en un ESP32 se sigue esta cadena:
 
 $$
 \text{Sensor (LM35: °C} \rightarrow \text{mV)} \longrightarrow \text{ADC (Muestrea y cuantiza)} \longrightarrow \text{Código (Escala, filtra, decide)} \longrightarrow \text{Salida (LCD 16x2)}
