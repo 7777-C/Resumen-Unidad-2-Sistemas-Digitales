@@ -49,7 +49,7 @@ $$
   * **DDRAM:** Códigos de los caracteres que se muestran en cada casilla.
   * **CGRAM:** Espacio para crear hasta **8 caracteres propios** (`0` a `7`), como el símbolo de grados (`°`), usando `createChar()` y mostrándolo con `write()`.
 
-### Conexión Directa vs. Módulo I2C
+### Conexión Directa vs Módulo I2C
 Para comunicarse con la LCD se usan pines de control (**RS** para comando `0` o dato `1`, **R/W** a GND para solo escribir, y **E** o *Enable* como botón de envío en flanco de bajada) y datos:
 
 | Aspecto | Conexión Directa (Modo 4 bits) | Con Módulo I2C (Chip PCF8574) |
