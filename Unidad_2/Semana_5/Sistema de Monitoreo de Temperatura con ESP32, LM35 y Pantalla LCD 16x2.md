@@ -16,7 +16,7 @@ $$
 
 ### 1.1. Muestreo: ¿Cada cuánto tiempo medimos?
 
-- **Muestra ($x[n]$) y Muestreo:** Una muestra es una captura del valor de una señal en un instante determinado. El muestreo consiste en capturar estas «fotos» de la señal a intervalos fijos de tiempo, como los fotogramas de una película.
+- **Muestra y Muestreo:** Una muestra es una captura del valor de una señal en un instante determinado. El muestreo consiste en capturar estas «fotos» de la señal a intervalos fijos de tiempo, como los fotogramas de una película.
 
 - **Periodo ($T_s$) y Frecuencia ($f_s$):** $T_s$ es el tiempo en segundos entre cada muestra y $f_s$ es la cantidad de muestras por segundo, medida en Hz.
 
