@@ -2,7 +2,7 @@
 
 ## 1. Fundamentos del Procesamiento Digital de Señales (DSP)
 
-El entorno físico es **analógico** (continuo, puede tomar cualquier valor en cualquier instante), mientras que un microcontrolador es **digital** (discreto, solo maneja números en instantes separados). El DSP consiste en convertir esa señal continua en una secuencia de números para escalarlos, limpiarlos, tomar decisiones y mostrarlos.
+El entorno físico es **analógico**, mientras que un microcontrolador es **digital**. El DSP consiste en convertir esa señal continua en una secuencia de números para escalarlos, limpiarlos, tomar decisiones y mostrarlos.
 
 **Cadena de adquisición y procesamiento:**
 Sensor (LM35: °C a mV) → ADC (Muestrea y cuantiza) → Código (Escala, filtra y decide) → Salida (Pantalla LCD / Alarma)
@@ -72,4 +72,3 @@ Se utiliza la librería `LiquidCrystal_I2C` con funciones como `lcd.init()`, `lc
 * **Separar fijo de variable:** Escribir etiquetas fijas (ej. `"Temp:"`) una sola vez en `setup()`, y actualizar únicamente los datos cambiantes dentro de `loop()` posicionando el cursor.
 * **Evitar `lcd.clear()` en el ciclo:** Es lento (~2 ms) y provoca parpadeo. Para evitar que queden dígitos residuales (ej. pasar de `"25.10"` a `"9.5"` y ver `"9.510"`), se sobrescribe el valor rellenando con espacios en blanco.
 * **Ahorro energético:** La luz de fondo es el componente de mayor consumo; conviene apagarla con `lcd.noBacklight()` y activarla solo ante una alarma o interacción del usuario.
-``` [cite: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
